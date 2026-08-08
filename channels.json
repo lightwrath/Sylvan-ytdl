@@ -1,0 +1,10 @@
+{
+  "download_folder": "~/youtube-downloads",
+  "days": 7,
+  "channels": [
+    {
+      "name": "Example Channel",
+      "url": "https://www.youtube.com/@example/videos"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.py[cod]
+
+# Local downloads and yt-dlp state
+downloads/
+*.part
+*.ytdl
+.yt-dlp-download-archive
+
+# Local logs
+*.log
