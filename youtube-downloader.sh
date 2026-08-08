@@ -47,7 +47,9 @@ install_app() {
 
     info "Installing Python dependencies"
     "${PYTHON}" -m pip install --upgrade pip
-    "${PYTHON}" -m pip install -r "${SCRIPT_DIR}/requirements.txt"
+    # --upgrade ensures an existing deployment receives the current yt-dlp
+    # release and its optional EJS challenge-solver distribution.
+    "${PYTHON}" -m pip install --upgrade -r "${SCRIPT_DIR}/requirements.txt"
     info "Setup complete"
 }
 
