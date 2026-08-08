@@ -41,7 +41,12 @@ def safe_folder_name(name: str) -> str:
     return name or "unnamed-channel"
 
 
-def download_channel(channel: dict[str, str], output_root: Path, cutoff: date) -> int:
+def download_channel(
+    channel: dict[str, str],
+    output_root: Path,
+    cutoff: date,
+    cookies_file: Path | None = None,
+) -> int:
     channel_dir = output_root / safe_folder_name(channel["name"])
     channel_dir.mkdir(parents=True, exist_ok=True)
 
@@ -70,6 +75,8 @@ def download_channel(channel: dict[str, str], output_root: Path, cutoff: date) -
         "ignoreerrors": True,
         "merge_output_format": "mp4",
     }
+    if cookies_file is not None:
+        options["cookiefile"] = str(cookies_file)
 
     LOGGER.info("Checking %s (since %s)", channel["name"], cutoff.isoformat())
     try:
@@ -106,8 +113,17 @@ def main() -> int:
         output_root.mkdir(parents=True, exist_ok=True)
         cutoff = date.today() - timedelta(days=days)
 
+        cookies_file_value = config.get("cookies_file")
+        cookies_file = (
+            Path(cookies_file_value).expanduser()
+            if cookies_file_value
+            else None
+        )
+        if cookies_file is not None and not cookies_file.is_file():
+            raise ValueError(f"cookies_file does not exist: {cookies_file}")
+
         failures = sum(
-            download_channel(channel, output_root, cutoff)
+            download_channel(channel, output_root, cutoff, cookies_file)
             != 0
             for channel in config["channels"]
         )

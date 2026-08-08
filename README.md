@@ -41,3 +41,21 @@ The script can also install dependencies and run immediately:
 ```bash
 ./youtube-downloader.sh install-start
 ```
+
+## YouTube authentication cookies
+
+If YouTube reports `Sign in to confirm you’re not a bot`, export cookies from a browser where YouTube is working and store them securely on the server. Use the Netscape-format cookies file and set its permissions:
+
+```bash
+mkdir -p /root/.config/sylvan-ytdl
+chmod 700 /root/.config/sylvan-ytdl
+chmod 600 /root/.config/sylvan-ytdl/youtube-cookies.txt
+```
+
+Add the path to `channels.json`:
+
+```json
+"cookies_file": "/root/.config/sylvan-ytdl/youtube-cookies.txt"
+```
+
+The cookies file is intentionally excluded from Git. Cookies expire and may need to be exported again periodically. Do not commit or share the file.

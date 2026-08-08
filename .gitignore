@@ -8,5 +8,10 @@ downloads/
 *.ytdl
 .yt-dlp-download-archive
 
+# Never commit browser authentication cookies
+youtube-cookies.txt
+cookies.txt
+*.cookies.txt
+
 # Local logs
 *.log
