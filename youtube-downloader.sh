@@ -21,6 +21,15 @@ check_ffmpeg() {
     fi
 }
 
+check_deno() {
+    if command -v deno >/dev/null 2>&1; then
+        info "Deno found: $(command -v deno)"
+    else
+        warn "Deno was not found. YouTube extraction may have missing formats or fail."
+        warn "Install it with your OS package manager, for example: sudo apk add deno"
+    fi
+}
+
 install_app() {
     command -v python3 >/dev/null 2>&1 || error "python3 is required but was not found"
     [[ -f "${APP}" ]] || error "Application not found: ${APP}"
@@ -28,6 +37,7 @@ install_app() {
     [[ -f "${SCRIPT_DIR}/requirements.txt" ]] || error "Requirements file not found"
 
     check_ffmpeg
+    check_deno
 
     if [[ ! -x "${PYTHON}" ]]; then
         info "Creating Python virtual environment in ${VENV_DIR}"
@@ -49,6 +59,7 @@ start_app() {
 
     [[ -f "${CONFIG}" ]] || error "Configuration not found: ${CONFIG}"
     check_ffmpeg
+    check_deno
     info "Starting downloader"
     exec "${PYTHON}" "${APP}" --config "${CONFIG}" "$@"
 }
