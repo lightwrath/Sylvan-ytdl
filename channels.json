@@ -1,10 +1,10 @@
 {
-  "download_folder": "~/youtube-downloads",
+  "download_folder": "/mnt/pve/Vault/Media/youtube",
   "days": 7,
   "channels": [
     {
-      "name": "Example Channel",
-      "url": "https://www.youtube.com/@example/videos"
+      "name": "NileRed",
+      "url": "https://www.youtube.com/@NileRed/videos"
     }
   ]
 }
