@@ -22,11 +22,26 @@ check_ffmpeg() {
 }
 
 check_deno() {
-    if command -v deno >/dev/null 2>&1; then
-        info "Deno found: $(command -v deno)"
-    else
+    if ! command -v deno >/dev/null 2>&1; then
         warn "Deno was not found. YouTube extraction may have missing formats or fail."
         warn "Install it with your OS package manager, for example: sudo apk add deno"
+        return
+    fi
+
+    local deno_path deno_version major minor
+    deno_path="$(command -v deno)"
+    deno_version="$(deno --version 2>/dev/null | awk '$1 == \"deno\" { print $2; exit }')"
+    if [[ "${deno_version}" =~ ^([0-9]+)\.([0-9]+) ]]; then
+        major="${BASH_REMATCH[1]}"
+        minor="${BASH_REMATCH[2]}"
+        if (( major > 2 || (major == 2 && minor >= 3) )); then
+            info "Deno found: ${deno_path} (${deno_version})"
+        else
+            warn "Deno ${deno_version} is too old; yt-dlp-ejs requires Deno >= 2.3."
+            warn "Try upgrading it with: sudo apk add --upgrade deno"
+        fi
+    else
+        warn "Deno was found at ${deno_path}, but its version could not be detected."
     fi
 }
 

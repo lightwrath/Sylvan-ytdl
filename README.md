@@ -10,7 +10,7 @@ The deployment helper creates a virtual environment, installs yt-dlp, and checks
 ./youtube-downloader.sh install
 ```
 
-The requirements install yt-dlp's default extras, including the EJS challenge-solver distribution needed by YouTube's current JavaScript checks. Deno is also checked by the helper.
+The requirements install yt-dlp's default extras, including the EJS challenge-solver distribution needed by YouTube's current JavaScript checks. Deno is also checked by the helper; the current EJS solver requires Deno 2.3 or newer.
 
 `ffmpeg` is recommended (and is required when yt-dlp needs to merge separate video and audio streams). The helper only warns if it is missing. On Debian/Ubuntu:
 
