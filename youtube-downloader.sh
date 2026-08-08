@@ -30,7 +30,7 @@ check_deno() {
 
     local deno_path deno_version major minor
     deno_path="$(command -v deno)"
-    deno_version="$(deno --version 2>/dev/null | awk '$1 == \"deno\" { print $2; exit }')"
+    deno_version="$(deno --version 2>/dev/null | awk '$1 == "deno" { print $2; exit }')"
     if [[ "${deno_version}" =~ ^([0-9]+)\.([0-9]+) ]]; then
         major="${BASH_REMATCH[1]}"
         minor="${BASH_REMATCH[2]}"
