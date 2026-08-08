@@ -60,8 +60,13 @@ def download_channel(channel: dict[str, str], output_root: Path, cutoff: date) -
         "noplaylist": False,
         "nooverwrites": True,
         "continuedl": True,
-        "retries": 3,
-        "fragment_retries": 3,
+        # Large YouTube streams can occasionally hit transient read, DNS, or
+        # TLS failures. Retry them without aborting the whole channel.
+        "socket_timeout": 60,
+        "retries": 10,
+        "fragment_retries": 10,
+        "extractor_retries": 5,
+        "file_access_retries": 5,
         "ignoreerrors": True,
         "merge_output_format": "mp4",
     }
