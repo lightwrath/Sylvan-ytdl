@@ -3,8 +3,44 @@
   "days": 7,
   "channels": [
     {
+      "name": "Essential Craftsman",
+      "url": "https://www.youtube.com/@essentialcraftsman/videos"
+    },
+    {
+      "name": "KRAZAM",
+      "url": "https://www.youtube.com/@KRAZAM"
+    },
+    {
+      "name": "Modern Software Engineering",
+      "url": "https://www.youtube.com/@ModernSoftwareEngineeringYT/videos"
+    },
+    {
       "name": "NileRed",
       "url": "https://www.youtube.com/@NileRed/videos"
+    },
+    {
+      "name": "Paul Sellers",
+      "url": "https://www.youtube.com/@Paul.Sellers/videos"
+    },
+    {
+      "name": "RedLetterMedia",
+      "url": "https://www.youtube.com/@RedLetterMedia/videos"
+    },
+    {
+      "name": "Sitch & Adam Show",
+      "url": "https://www.youtube.com/@SitchAndAdamShow/streams"
+    },
+    {
+      "name": "Techmoan",
+      "url": "https://www.youtube.com/@Techmoan"
+    },
+    {
+      "name": "The China Show",
+      "url": "https://www.youtube.com/@TheChinaShow/streams"
+    },
+    {
+      "name": "The Excellent Laborer",
+      "url": "https://www.youtube.com/@TheExcellentLaborer/videos"
     }
   ]
 }
