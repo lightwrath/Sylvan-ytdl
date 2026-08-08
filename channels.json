@@ -1,6 +1,7 @@
 {
   "download_folder": "/mnt/pve/Vault/Media/youtube",
   "days": 7,
+  "max_videos_to_check": 100,
   "channels": [
     {
       "name": "Essential Craftsman",

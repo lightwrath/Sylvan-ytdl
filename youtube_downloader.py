@@ -46,6 +46,7 @@ def download_channel(
     output_root: Path,
     cutoff: date,
     cookies_file: Path | None = None,
+    max_videos_to_check: int = 100,
 ) -> int:
     channel_dir = output_root / safe_folder_name(channel["name"])
     channel_dir.mkdir(parents=True, exist_ok=True)
@@ -62,7 +63,10 @@ def download_channel(
             cutoff.strftime("%Y%m%d"),
             date.today().strftime("%Y%m%d"),
         ),
+        # Avoid requesting metadata for hundreds of historical videos. The
+        # channel feeds are newest-first; 0 means inspect the full feed.
         "noplaylist": False,
+        "sleep_interval_requests": 0.75,
         "nooverwrites": True,
         "continuedl": True,
         # Large YouTube streams can occasionally hit transient read, DNS, or
@@ -77,6 +81,8 @@ def download_channel(
     }
     if cookies_file is not None:
         options["cookiefile"] = str(cookies_file)
+    if max_videos_to_check:
+        options["playlistend"] = max_videos_to_check
 
     LOGGER.info("Checking %s (since %s)", channel["name"], cutoff.isoformat())
     try:
@@ -122,8 +128,18 @@ def main() -> int:
         if cookies_file is not None and not cookies_file.is_file():
             raise ValueError(f"cookies_file does not exist: {cookies_file}")
 
+        max_videos_to_check = int(config.get("max_videos_to_check", 100))
+        if max_videos_to_check < 0:
+            raise ValueError("max_videos_to_check must be zero or greater")
+
         failures = sum(
-            download_channel(channel, output_root, cutoff, cookies_file)
+            download_channel(
+                channel,
+                output_root,
+                cutoff,
+                cookies_file,
+                max_videos_to_check,
+            )
             != 0
             for channel in config["channels"]
         )
