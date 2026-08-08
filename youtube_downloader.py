@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any
 
 import yt_dlp
+from yt_dlp.utils import DateRange
 
 
 LOGGER = logging.getLogger("youtube_downloader")
@@ -50,7 +51,12 @@ def download_channel(channel: dict[str, str], output_root: Path, cutoff: date) -
         "format": "bestvideo*+bestaudio/best",
         "outtmpl": str(channel_dir / "%(upload_date)s - %(title)s [%(id)s].%(ext)s"),
         "download_archive": str(channel_dir / ".yt-dlp-download-archive"),
-        "dateafter": cutoff.strftime("%Y%m%d"),
+        # YoutubeDL's Python API expects a DateRange. The CLI's dateafter
+        # option is not sufficient when passed directly as an API parameter.
+        "daterange": DateRange(
+            cutoff.strftime("%Y%m%d"),
+            date.today().strftime("%Y%m%d"),
+        ),
         "noplaylist": False,
         "nooverwrites": True,
         "continuedl": True,
