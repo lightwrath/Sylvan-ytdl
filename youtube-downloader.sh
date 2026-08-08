@@ -38,7 +38,7 @@ check_deno() {
             info "Deno found: ${deno_path} (${deno_version})"
         else
             warn "Deno ${deno_version} is too old; yt-dlp-ejs requires Deno >= 2.3."
-            warn "Try upgrading it with: sudo apk add --upgrade deno"
+            warn "On Alpine 3.20, try: apk add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/edge/community deno"
         fi
     else
         warn "Deno was found at ${deno_path}, but its version could not be detected."
