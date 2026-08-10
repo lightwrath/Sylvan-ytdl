@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import Any
 
 import yt_dlp
-from yt_dlp.utils import DateRange
+from yt_dlp.utils import DateRange, RejectedVideoReached
 
 
 LOGGER = logging.getLogger("youtube_downloader")
@@ -91,6 +91,11 @@ def download_channel(
     try:
         with yt_dlp.YoutubeDL(options) as ydl:
             return ydl.download([channel["url"]])
+    except RejectedVideoReached:
+        # break_on_reject intentionally stops at the first video outside the
+        # date range. This is a normal, successful end to this channel.
+        LOGGER.info("Reached the end of the date range for %s", channel["name"])
+        return 0
     except Exception:
         LOGGER.exception("Could not process channel %s", channel["name"])
         return 1
