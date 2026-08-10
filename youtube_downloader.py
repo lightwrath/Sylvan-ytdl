@@ -63,6 +63,9 @@ def download_channel(
             cutoff.strftime("%Y%m%d"),
             date.today().strftime("%Y%m%d"),
         ),
+        # Channel feeds are newest-first. Once yt-dlp finds the first entry
+        # rejected by the date range, stop processing this channel.
+        "break_on_reject": True,
         # Avoid requesting metadata for hundreds of historical videos. The
         # channel feeds are newest-first; 0 means inspect the full feed.
         "noplaylist": False,

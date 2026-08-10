@@ -30,7 +30,7 @@ Edit `channels.json`, replacing the example channel with channel URLs such as `h
 ./youtube-downloader.sh start
 ```
 
-The download folder, default seven-day window, and maximum of 100 newest videos inspected per channel are set in `channels.json`. The maximum prevents excessive requests and YouTube rate limiting; set `max_videos_to_check` to `0` to inspect the full channel feed. Override the window for one run with:
+The download folder, default seven-day window, and maximum of 100 newest videos inspected per channel are set in `channels.json`. Channel feeds are processed newest-first and stop at the first video outside the date range. The maximum remains a safety limit against excessive requests and YouTube rate limiting; set `max_videos_to_check` to `0` to remove that limit. Override the window for one run with:
 
 ```bash
 ./youtube-downloader.sh start --days 14
