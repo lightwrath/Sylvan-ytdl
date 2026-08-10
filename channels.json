@@ -1,47 +1,75 @@
 {
-  "download_folder": "/mnt/pve/Vault/Media/youtube",
-  "days": 7,
-  "max_videos_to_check": 100,
-  "channels": [
-    {
-      "name": "Essential Craftsman",
-      "url": "https://www.youtube.com/@essentialcraftsman/videos"
-    },
-    {
-      "name": "KRAZAM",
-      "url": "https://www.youtube.com/@KRAZAM"
-    },
-    {
-      "name": "Modern Software Engineering",
-      "url": "https://www.youtube.com/@ModernSoftwareEngineeringYT/videos"
-    },
-    {
-      "name": "NileRed",
-      "url": "https://www.youtube.com/@NileRed/videos"
-    },
-    {
-      "name": "Paul Sellers",
-      "url": "https://www.youtube.com/@Paul.Sellers/videos"
-    },
-    {
-      "name": "RedLetterMedia",
-      "url": "https://www.youtube.com/@RedLetterMedia/videos"
-    },
-    {
-      "name": "Sitch & Adam Show",
-      "url": "https://www.youtube.com/@SitchAndAdamShow/streams"
-    },
-    {
-      "name": "Techmoan",
-      "url": "https://www.youtube.com/@Techmoan"
-    },
-    {
-      "name": "The China Show",
-      "url": "https://www.youtube.com/@TheChinaShow/streams"
-    },
-    {
-      "name": "The Excellent Laborer",
-      "url": "https://www.youtube.com/@TheExcellentLaborer/videos"
-    }
-  ]
+    "download_folder": "/mnt/pve/Vault/Media/youtube",
+    "days": 7,
+    "max_videos_to_check": 100,
+    "channels": [
+        {
+            "name": "Essential Craftsman",
+            "url": "https://www.youtube.com/@essentialcraftsman/videos"
+        },
+        {
+            "name": "KRAZAM",
+            "url": "https://www.youtube.com/@KRAZAM"
+        },
+        {
+            "name": "Level1Linux",
+            "url": "https://www.youtube.com/@Level1Linux/videos"
+        },
+        {
+            "name": "Level1Techs",
+            "url": "https://www.youtube.com/@Level1Techs/videos"
+        },
+        {
+            "name": "MeatCanyon",
+            "url": "https://www.youtube.com/@MeatCanyon/videos"
+        },
+        {
+            "name": "Modern Software Engineering",
+            "url": "https://www.youtube.com/@ModernSoftwareEngineeringYT/videos"
+        },
+        {
+            "name": "NileRed",
+            "url": "https://www.youtube.com/@NileRed/videos"
+        },
+        {
+            "name": "Not Just Bikes",
+            "url": "https://www.youtube.com/@NotJustBikes/videos"
+        },
+        {
+            "name": "Paul Sellers",
+            "url": "https://www.youtube.com/@Paul.Sellers/videos"
+        },
+        {
+            "name": "RedLetterMedia",
+            "url": "https://www.youtube.com/@RedLetterMedia/videos"
+        },
+        {
+            "name": "Site Inspections",
+            "url": "https://www.youtube.com/@Siteinspections/videos"
+        },
+        {
+            "name": "Sitch & Adam Show",
+            "url": "https://www.youtube.com/@SitchAndAdamShow/streams"
+        },
+        {
+            "name": "Techmoan",
+            "url": "https://www.youtube.com/@Techmoan"
+        },
+        {
+            "name": "Technology Connections",
+            "url": "https://www.youtube.com/@TechnologyConnections/videos"
+        },
+        {
+            "name": "The China Show",
+            "url": "https://www.youtube.com/@TheChinaShow/streams"
+        },
+        {
+            "name": "The Excellent Laborer",
+            "url": "https://www.youtube.com/@TheExcellentLaborer/videos"
+        },
+        {
+            "name": "The Proper People",
+            "url": "https://www.youtube.com/@TheProperPeople/videos"
+        }
+    ]
 }
