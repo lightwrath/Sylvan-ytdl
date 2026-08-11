@@ -4,12 +4,24 @@
     "max_videos_to_check": 100,
     "channels": [
         {
+            "name": "Big A",
+            "url": "https://www.youtube.com/@AtriocClips/videos"
+        },
+        {
+            "name": "Bijan Bowen",
+            "url": "https://www.youtube.com/@Bijanbowen/videos"
+        },
+        {
             "name": "Essential Craftsman",
             "url": "https://www.youtube.com/@essentialcraftsman/videos"
         },
         {
             "name": "Gamers Nexus",
             "url": "https://www.youtube.com/@GamersNexus/videos"
+        },
+        {
+            "name": "KAHELI",
+            "url": "https://www.youtube.com/@KAHELIOFFICIAL/videos"
         },
         {
             "name": "KRAZAM",
@@ -38,6 +50,10 @@
         {
             "name": "Not Just Bikes",
             "url": "https://www.youtube.com/@NotJustBikes/videos"
+        },
+        {
+            "name": "Patrick Boyle",
+            "url": "https://www.youtube.com/@PBoyle/videos"
         },
         {
             "name": "Paul Sellers",
@@ -70,6 +86,10 @@
         {
             "name": "The Excellent Laborer",
             "url": "https://www.youtube.com/@TheExcellentLaborer/videos"
+        },
+        {
+            "name": "The Plain Bagel",
+            "url": "https://www.youtube.com/@ThePlainBagel"
         },
         {
             "name": "The Proper People",
