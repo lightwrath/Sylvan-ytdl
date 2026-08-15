@@ -41,6 +41,19 @@ def safe_folder_name(name: str) -> str:
     return name or "unnamed-channel"
 
 
+def remove_partial_downloads(channel_dir: Path) -> None:
+    """Remove yt-dlp temporary state so each run starts a failed video anew."""
+    partial_files = [
+        path
+        for path in channel_dir.iterdir()
+        if path.is_file() and (".part" in path.name or path.name.endswith(".ytdl"))
+    ]
+    for path in partial_files:
+        path.unlink()
+    if partial_files:
+        LOGGER.info("Removed %d partial download file(s) from %s", len(partial_files), channel_dir)
+
+
 def download_channel(
     channel: dict[str, str],
     output_root: Path,
@@ -50,6 +63,7 @@ def download_channel(
 ) -> int:
     channel_dir = output_root / safe_folder_name(channel["name"])
     channel_dir.mkdir(parents=True, exist_ok=True)
+    remove_partial_downloads(channel_dir)
 
     # The archive is the reliable duplicate check (video IDs are used, not titles).
     # nooverwrites also protects files that existed before the archive was created.

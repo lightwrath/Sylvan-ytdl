@@ -1,6 +1,6 @@
 # YouTube recent-video downloader
 
-Downloads videos uploaded within the configured number of previous days, creating one directory per channel. A per-channel yt-dlp archive prevents videos from being downloaded twice.
+Downloads videos uploaded within the configured number of previous days, creating one directory per channel. A per-channel yt-dlp archive prevents videos from being downloaded twice. Before checking a channel, incomplete yt-dlp `.part` and `.ytdl` files from earlier runs are removed so failed downloads start over rather than resume.
 
 ## Install
 
