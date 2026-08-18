@@ -2,6 +2,8 @@
     "download_folder": "/mnt/pve/Vault/Media/youtube",
     "days": 7,
     "max_videos_to_check": 100,
+    "sleep_interval": 5,
+    "max_sleep_interval": 10,
     "channels": [
         {
             "name": "Big A",

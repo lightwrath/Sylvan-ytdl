@@ -30,7 +30,9 @@ Edit `channels.json`, replacing the example channel with channel URLs such as `h
 ./youtube-downloader.sh start
 ```
 
-The download folder, default seven-day window, and maximum of 100 newest videos inspected per channel are set in `channels.json`. Channel feeds are processed newest-first and stop at the first video outside the date range. The maximum remains a safety limit against excessive requests and YouTube rate limiting; set `max_videos_to_check` to `0` to remove that limit. Override the window for one run with:
+The download folder, default seven-day window, and maximum of 100 newest videos inspected per channel are set in `channels.json`. Channel feeds are processed newest-first and stop at the first video outside the date range. The maximum remains a safety limit against excessive requests and YouTube rate limiting; set `max_videos_to_check` to `0` to remove that limit.
+
+`"sleep_interval": 5` and `"max_sleep_interval": 10` add a randomized five-to-ten-second pause between video downloads. This reduces rate limiting. Set both values to `0` to disable the inter-video pause. Override the date window for one run with:
 
 ```bash
 ./youtube-downloader.sh start --days 14
@@ -65,3 +67,24 @@ Add the path to `channels.json`:
 ```
 
 The cookies file is intentionally excluded from Git. Cookies expire and may need to be exported again periodically. Do not commit or share the file.
+
+## Optional PO-token provider
+
+YouTube can reject maximum-quality media streams with HTTP 403 even after JavaScript challenges are solved. A Proof-of-Origin (PO) token provider can improve this. The following uses the external `bgutil-ytdlp-pot-provider` project and its script mode; it requires Deno 2 or newer and Git.
+
+```bash
+/root/Sylvan-ytdl/.venv/bin/python -m pip install --upgrade bgutil-ytdlp-pot-provider
+cd /root
+git clone --depth 1 --branch 1.3.1 https://github.com/Brainicism/bgutil-ytdlp-pot-provider.git
+cd /root/bgutil-ytdlp-pot-provider/server
+deno install --allow-scripts=npm:canvas --frozen
+```
+
+Then add these top-level values to `channels.json`:
+
+```json
+"youtube_player_client": "mweb",
+"po_provider_server_home": "/root/bgutil-ytdlp-pot-provider/server"
+```
+
+The downloader passes these settings to yt-dlp, which invokes the installed provider to obtain per-video PO tokens. This provider is optional and external to this project; it may reduce 403s but cannot guarantee they never occur.

@@ -60,6 +60,10 @@ def download_channel(
     cutoff: date,
     cookies_file: Path | None = None,
     max_videos_to_check: int = 100,
+    sleep_interval: float = 5,
+    max_sleep_interval: float = 10,
+    youtube_player_client: str | None = None,
+    po_provider_server_home: Path | None = None,
 ) -> int:
     channel_dir = output_root / safe_folder_name(channel["name"])
     channel_dir.mkdir(parents=True, exist_ok=True)
@@ -100,6 +104,20 @@ def download_channel(
         options["cookiefile"] = str(cookies_file)
     if max_videos_to_check:
         options["playlistend"] = max_videos_to_check
+    if sleep_interval:
+        # Add a randomized delay between video downloads to reduce YouTube
+        # account/IP rate limiting. This is separate from request pacing.
+        options["sleep_interval"] = sleep_interval
+        options["max_sleep_interval"] = max_sleep_interval
+    if youtube_player_client or po_provider_server_home:
+        extractor_args: dict[str, dict[str, list[str]]] = {}
+        if youtube_player_client:
+            extractor_args["youtube"] = {"player_client": [youtube_player_client]}
+        if po_provider_server_home:
+            extractor_args["youtubepot-bgutilscript"] = {
+                "server_home": [str(po_provider_server_home)]
+            }
+        options["extractor_args"] = extractor_args
 
     LOGGER.info("Checking %s (since %s)", channel["name"], cutoff.isoformat())
     try:
@@ -154,6 +172,27 @@ def main() -> int:
         if max_videos_to_check < 0:
             raise ValueError("max_videos_to_check must be zero or greater")
 
+        sleep_interval = float(config.get("sleep_interval", 5))
+        max_sleep_interval = float(config.get("max_sleep_interval", 10))
+        if sleep_interval < 0 or max_sleep_interval < sleep_interval:
+            raise ValueError(
+                "sleep_interval must be zero or greater and no greater than max_sleep_interval"
+            )
+
+        youtube_player_client = config.get("youtube_player_client")
+        if youtube_player_client is not None and not isinstance(youtube_player_client, str):
+            raise ValueError("youtube_player_client must be a string")
+        po_provider_home_value = config.get("po_provider_server_home")
+        po_provider_server_home = (
+            Path(po_provider_home_value).expanduser()
+            if po_provider_home_value
+            else None
+        )
+        if po_provider_server_home is not None and not po_provider_server_home.is_dir():
+            raise ValueError(
+                f"po_provider_server_home does not exist: {po_provider_server_home}"
+            )
+
         failures = sum(
             download_channel(
                 channel,
@@ -161,6 +200,10 @@ def main() -> int:
                 cutoff,
                 cookies_file,
                 max_videos_to_check,
+                sleep_interval,
+                max_sleep_interval,
+                youtube_player_client,
+                po_provider_server_home,
             )
             != 0
             for channel in config["channels"]
