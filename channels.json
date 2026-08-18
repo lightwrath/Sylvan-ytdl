@@ -4,6 +4,8 @@
     "max_videos_to_check": 100,
     "sleep_interval": 5,
     "max_sleep_interval": 10,
+    "youtube_player_client": "mweb",
+    "po_provider_server_home": "/root/bgutil-ytdlp-pot-provider/server",
     "channels": [
         {
             "name": "Big A",
