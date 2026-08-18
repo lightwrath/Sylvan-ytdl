@@ -1,5 +1,6 @@
 {
     "download_folder": "/mnt/pve/Vault/Media/youtube",
+    "cookies_file": "/mnt/pve/Vault/Media/youtube/cookies.txt",
     "days": 7,
     "max_videos_to_check": 100,
     "sleep_interval": 5,
