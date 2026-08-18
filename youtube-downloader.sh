@@ -21,6 +21,21 @@ check_ffmpeg() {
     fi
 }
 
+require_deno_2_3() {
+    command -v deno >/dev/null 2>&1 || error "Deno 2.3 or newer is required for the configured PO-token provider"
+
+    local deno_version major minor
+    deno_version="$(deno --version 2>/dev/null | awk '$1 == "deno" { print $2; exit }')"
+    if [[ ! "${deno_version}" =~ ^([0-9]+)\.([0-9]+) ]]; then
+        error "Could not detect the Deno version required for the configured PO-token provider"
+    fi
+    major="${BASH_REMATCH[1]}"
+    minor="${BASH_REMATCH[2]}"
+    if (( major < 2 || (major == 2 && minor < 3) )); then
+        error "Deno ${deno_version} is too old; the configured PO-token provider requires Deno 2.3 or newer"
+    fi
+}
+
 check_deno() {
     if ! command -v deno >/dev/null 2>&1; then
         warn "Deno was not found. YouTube extraction may have missing formats or fail."
@@ -45,6 +60,45 @@ check_deno() {
     fi
 }
 
+install_po_provider_if_configured() {
+    local provider_home provider_repo
+    provider_home="$("${PYTHON}" - "${CONFIG}" <<'PY'
+import json
+import sys
+
+with open(sys.argv[1], encoding="utf-8") as file:
+    value = json.load(file).get("po_provider_server_home")
+if value is not None and not isinstance(value, str):
+    raise ValueError("po_provider_server_home must be a string")
+print(value or "")
+PY
+)" || error "Could not read po_provider_server_home from ${CONFIG}"
+
+    # PO-token support is opt-in: it is only installed when this setting exists.
+    [[ -n "${provider_home}" ]] || return
+    [[ "$(basename -- "${provider_home}")" == "server" ]] \
+        || error "po_provider_server_home must be the provider's server directory"
+    command -v git >/dev/null 2>&1 || error "git is required for the configured PO-token provider"
+    require_deno_2_3
+
+    provider_repo="$(dirname -- "${provider_home}")"
+    if [[ ! -d "${provider_repo}" ]]; then
+        info "Cloning bgutil PO-token provider into ${provider_repo}"
+        mkdir -p "$(dirname -- "${provider_repo}")"
+        git clone --depth 1 --branch 1.3.1 \
+            https://github.com/Brainicism/bgutil-ytdlp-pot-provider.git "${provider_repo}"
+    fi
+    [[ -d "${provider_home}" ]] || error "PO-token provider server directory not found: ${provider_home}"
+
+    info "Installing bgutil PO-token provider plugin"
+    "${PYTHON}" -m pip install --upgrade bgutil-ytdlp-pot-provider
+    info "Installing PO-token provider runtime dependencies"
+    (
+        cd -- "${provider_home}"
+        deno install --allow-scripts=npm:canvas --frozen
+    )
+}
+
 install_app() {
     command -v python3 >/dev/null 2>&1 || error "python3 is required but was not found"
     [[ -f "${APP}" ]] || error "Application not found: ${APP}"
@@ -65,6 +119,7 @@ install_app() {
     # --upgrade ensures an existing deployment receives the current yt-dlp
     # release and its optional EJS challenge-solver distribution.
     "${PYTHON}" -m pip install --upgrade -r "${SCRIPT_DIR}/requirements.txt"
+    install_po_provider_if_configured
     info "Setup complete"
 }
 

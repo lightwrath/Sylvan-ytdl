@@ -70,21 +70,19 @@ The cookies file is intentionally excluded from Git. Cookies expire and may need
 
 ## Optional PO-token provider
 
-YouTube can reject maximum-quality media streams with HTTP 403 even after JavaScript challenges are solved. A Proof-of-Origin (PO) token provider can improve this. The following uses the external `bgutil-ytdlp-pot-provider` project and its script mode; it requires Deno 2 or newer and Git.
+YouTube can reject maximum-quality media streams with HTTP 403 even after JavaScript challenges are solved. A Proof-of-Origin (PO) token provider can improve this. This project can set up the external `bgutil-ytdlp-pot-provider` provider automatically. It requires Git and Deno 2.3 or newer.
 
-```bash
-/root/Sylvan-ytdl/.venv/bin/python -m pip install --upgrade bgutil-ytdlp-pot-provider
-cd /root
-git clone --depth 1 --branch 1.3.1 https://github.com/Brainicism/bgutil-ytdlp-pot-provider.git
-cd /root/bgutil-ytdlp-pot-provider/server
-deno install --allow-scripts=npm:canvas --frozen
-```
-
-Then add these top-level values to `channels.json`:
+Add these top-level values to `channels.json`:
 
 ```json
 "youtube_player_client": "mweb",
 "po_provider_server_home": "/root/bgutil-ytdlp-pot-provider/server"
 ```
 
-The downloader passes these settings to yt-dlp, which invokes the installed provider to obtain per-video PO tokens. This provider is optional and external to this project; it may reduce 403s but cannot guarantee they never occur.
+Then run:
+
+```bash
+./youtube-downloader.sh install
+```
+
+When `po_provider_server_home` is configured, the installer clones the provider release, installs its Python plugin into this project's virtual environment, and installs its Deno runtime dependencies. The downloader then passes the settings to yt-dlp, which invokes the provider for per-video PO tokens. This provider is optional and external to this project; it may reduce 403s but cannot guarantee they never occur.
