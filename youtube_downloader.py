@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import os
 import re
 import sys
 from datetime import date, timedelta
@@ -39,6 +40,18 @@ def safe_folder_name(name: str) -> str:
     """Prevent a channel name from creating paths outside the download folder."""
     name = re.sub(r"[\\/:*?\"<>|\x00-\x1f]", "_", name).strip(" .")
     return name or "unnamed-channel"
+
+
+def clear_po_token_cache(cookies_file: Path | None, provider_home: Path | None) -> None:
+    """Force the PO provider to generate tokens for the current cookie session."""
+    if cookies_file is None or provider_home is None:
+        return
+
+    cache_root = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache"))
+    cache_file = cache_root / "bgutil-ytdlp-pot-provider" / "cache.json"
+    if cache_file.is_file():
+        cache_file.unlink()
+        LOGGER.info("Removed cached PO tokens so current YouTube cookies are used")
 
 
 def remove_partial_downloads(channel_dir: Path) -> None:
@@ -192,6 +205,7 @@ def main() -> int:
             raise ValueError(
                 f"po_provider_server_home does not exist: {po_provider_server_home}"
             )
+        clear_po_token_cache(cookies_file, po_provider_server_home)
 
         failures = sum(
             download_channel(

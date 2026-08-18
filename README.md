@@ -85,4 +85,4 @@ Then run:
 ./youtube-downloader.sh install
 ```
 
-When `po_provider_server_home` is configured, the installer clones the provider release, installs its Python plugin into this project's virtual environment, and installs its Deno runtime dependencies. The downloader then passes the settings to yt-dlp, which invokes the provider for per-video PO tokens. This provider is optional and external to this project; it may reduce 403s but cannot guarantee they never occur.
+When `po_provider_server_home` is configured, the installer clones the provider release, installs its Python plugin into this project's virtual environment, and installs its Deno runtime dependencies. When both the provider and `cookies_file` are configured, each downloader run clears the provider's cached PO tokens before processing channels. New tokens are then generated against the current cookie session. The downloader passes the settings to yt-dlp, which invokes the provider for per-video PO tokens. This provider is optional and external to this project; it may reduce 403s but cannot guarantee they never occur.
